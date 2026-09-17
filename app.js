@@ -284,7 +284,7 @@ async function handleVoice(text) {
     return;
   }
 
-  voiceHelp.textContent = "Comando não reconhecido. Pode dizer “assunto”, “data”, “guardar”, “consultar” ou “apagar registo 3”.";
+  voiceHelp.textContent = `O iPhone entendeu: “${text}”. Comando não reconhecido.`;
 }
 
 voiceBtn.addEventListener("click", () => {
