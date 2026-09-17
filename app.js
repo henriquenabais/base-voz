@@ -76,7 +76,13 @@ function getAllRecords() {
 }
 
 function normalize(s) {
-  return String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+  return String(s || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[.,!?;:()[\]{}"']/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 function parseDate(text) {
@@ -198,7 +204,7 @@ function setupRecognition() {
   recognition.lang = "pt-PT";
   recognition.continuous = false;
   recognition.interimResults = false;
-  recognition.maxAlternatives = 1;
+  recognition.maxAlternatives = 5;
 
   recognition.onstart = () => {
     voiceBtn.classList.add("listening");
@@ -223,7 +229,7 @@ function setupRecognition() {
 
 async function handleVoice(text) {
   const n = normalize(text);
-  voiceHelp.textContent = `Ouvido: “${text}”`;
+  voiceHelp.textContent = `O iPhone entendeu: “${text}”`;
 
   const deleteMatch = n.match(/^apagar(?: registo)?\s+(\d+)$/);
   if (deleteMatch) {
@@ -243,12 +249,12 @@ async function handleVoice(text) {
     return;
   }
 
-  if (n === "assunto") {
+  if (n === "assunto" || n === "assunto campo") {
     voiceMode = "assunto";
     voiceHelp.textContent = "Agora toque novamente no microfone e diga o assunto.";
     return;
   }
-  if (n === "data") {
+  if (n === "data" || n === "data campo") {
     voiceMode = "data";
     voiceHelp.textContent = "Agora toque novamente no microfone e diga a data.";
     return;
