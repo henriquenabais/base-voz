@@ -1,0 +1,10 @@
+{
+  "name": "Base Voz",
+  "short_name": "Base Voz",
+  "lang": "pt-PT",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f3f4f6",
+  "theme_color": "#0b5cff",
+  "description": "Base de dados pessoal local com entrada por voz."
+}

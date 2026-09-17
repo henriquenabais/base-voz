@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b5cff">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Base Voz">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="styles.css">
+  <title>Base Voz</title>
+</head>
+<body>
+  <main class="container">
+    <header>
+      <h1>Base Voz</h1>
+      <p class="subtitle">Base de dados local no iPhone</p>
+    </header>
+
+    <section class="card voice-card">
+      <button id="voiceBtn" class="voice-btn" type="button" aria-label="Iniciar reconhecimento de voz">🎤</button>
+      <div>
+        <strong id="voiceStatus">Pronto</strong>
+        <p id="voiceHelp">Toque no microfone e diga, por exemplo: “assunto” ou “data”.</p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Registo</h2>
+      <label for="assunto">Assunto</label>
+      <input id="assunto" type="text" autocomplete="off" placeholder="Assunto">
+
+      <label for="data">Data</label>
+      <input id="data" type="text" inputmode="text" autocomplete="off" placeholder="DD/MM/AAAA">
+
+      <div class="actions">
+        <button id="saveBtn" class="primary" type="button">Guardar</button>
+        <button id="clearBtn" type="button">Limpar</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Registos</h2>
+      <input id="search" type="search" placeholder="Pesquisar assunto ou data">
+      <button id="refreshBtn" type="button" class="secondary full">Atualizar lista</button>
+      <div id="records" class="records"></div>
+    </section>
+
+    <section class="card">
+      <h2>Backup</h2>
+      <p class="small">O backup contém os teus registos. Guarda-o num local seguro, por exemplo no iCloud Drive.</p>
+      <div class="actions">
+        <button id="exportBtn" type="button">💾 Exportar backup</button>
+        <label class="file-btn">
+          📥 Restaurar backup
+          <input id="importFile" type="file" accept=".json,application/json">
+        </label>
+      </div>
+      <p id="backupStatus" class="status"></p>
+    </section>
+
+    <section class="card info">
+      <strong>Privacidade</strong>
+      <p>Os registos são guardados localmente neste iPhone. A aplicação não envia os registos para um servidor.</p>
+      <p class="small">O reconhecimento de voz depende das capacidades do Safari/iOS e poderá necessitar de Internet.</p>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
