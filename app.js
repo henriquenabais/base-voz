@@ -249,7 +249,7 @@ async function handleVoice(text) {
     return;
   }
 
-  if (n === "assunto" || n === "assunto campo") {
+  if (["assunto", "assumpto", "assunto campo", "assumpto campo"].includes(n)) {
     voiceMode = "assunto";
     voiceHelp.textContent = "Agora toque novamente no microfone e diga o assunto.";
     return;
