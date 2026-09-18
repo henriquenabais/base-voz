@@ -144,7 +144,13 @@ function clearForm() {
 
 async function renderRecords() {
   const all = await getAllRecords();
-  all.sort((a,b) => b.id - a.id);
+ const dateValue = (r) => {
+  const m = String(r.data || "").match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  if (!m) return Number.MAX_SAFE_INTEGER;
+  return Number(`${m[3]}${m[2]}${m[1]}`);
+};
+
+all.sort((a, b) => dateValue(a) - dateValue(b));
   const q = normalize(searchEl.value);
   const filtered = q
     ? all.filter(r => normalize(r.assunto).includes(q) || normalize(r.data).includes(q))
