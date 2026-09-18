@@ -243,10 +243,15 @@ async function handleVoice(text) {
     await remove(Number(deleteMatch[1]));
     return;
   }
-  if (["guardar","gravar","guardar registo","gravar registo"].includes(n)) {
-    await saveCurrent();
-    return;
-  }
+if (["guardar","gravar","guardar registo","gravar registo"].includes(n)) {
+  await saveCurrent();
+  voiceMode = null;
+  if (recognition) recognition.stop();
+  voiceBtn.classList.remove("listening");
+  voiceStatus.textContent = "Pronto";
+  voiceHelp.textContent = "Registo guardado. Microfone desativado.";
+  return;
+}
   if (["limpar","novo registo"].includes(n)) {
     clearForm();
     return;
