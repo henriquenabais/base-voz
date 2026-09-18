@@ -96,10 +96,17 @@ function parseDate(text) {
     janeiro:"01", fevereiro:"02", marco:"03", abril:"04", maio:"05", junho:"06",
     julho:"07", agosto:"08", setembro:"09", outubro:"10", novembro:"11", dezembro:"12"
   };
-  const n = s.match(/\b(\d{1,2})\s+(?:de\s+)?([a-z]+)(?:\s+(?:de\s+)?(\d{4}))?\b/);
-  if (n && months[n[2]]) {
-    const year = n[3] || String(new Date().getFullYear());
-    return `${n[1].padStart(2,"0")}/${months[n[2]]}/${year}`;
+ const n = s.match(/\b(\d{1,2})\s+(?:de\s+)?([a-z]+)(?:\s+(?:de\s+)?(\d{4}))?\b/);
+
+if (n) {
+  const day = n[1].padStart(2, "0");
+  const month = months[n[2]];
+  const year = n[3] || String(new Date().getFullYear());
+
+  if (month) {
+    return `${day}/${month}/${year}`;
+  }
+}
   }
   return text.trim();
 }
