@@ -337,7 +337,14 @@ voiceBtn.addEventListener("click", () => {
   try { recognition.start(); } catch (_) {}
 });
 
-$("saveBtn").addEventListener("click", saveCurrent);
+$("saveBtn").addEventListener("click", async () => {
+  await saveCurrent();
+  voiceMode = null;
+  if (recognition) recognition.stop();
+  voiceBtn.classList.remove("listening");
+  voiceStatus.textContent = "Pronto";
+  voiceHelp.textContent = "Registo guardado. Microfone desativado.";
+});
 $("clearBtn").addEventListener("click", clearForm);
 $("refreshBtn").addEventListener("click", renderRecords);
 searchEl.addEventListener("input", renderRecords);
