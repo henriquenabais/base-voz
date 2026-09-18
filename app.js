@@ -5,6 +5,8 @@ const STORE = "registos";
 let db = null;
 let recognition = null;
 let voiceMode = null;
+let recognitionActive = false;
+let saveWhenRecognitionEnds = false;
 let editingId = null;
 
 const $ = id => document.getElementById(id);
@@ -247,13 +249,22 @@ function setupRecognition() {
   recognition.maxAlternatives = 5;
 
   recognition.onstart = () => {
+    recognitionActive = true;
     voiceBtn.classList.add("listening");
     voiceStatus.textContent = "A ouvir…";
   };
-  recognition.onend = () => {
-    voiceBtn.classList.remove("listening");
-    voiceStatus.textContent = "Pronto";
-  };
+recognition.onend = async () => {
+  recognitionActive = false;
+  voiceBtn.classList.remove("listening");
+  voiceStatus.textContent = "Pronto";
+
+  if (saveWhenRecognitionEnds) {
+    saveWhenRecognitionEnds = false;
+    await saveCurrent();
+    voiceMode = null;
+    voiceHelp.textContent = "Registo guardado. Microfone desativado.";
+  }
+};
   recognition.onerror = e => {
     voiceBtn.classList.remove("listening");
     voiceStatus.textContent = "Erro no reconhecimento";
@@ -279,7 +290,8 @@ async function handleVoice(text) {
 if (["guardar","gravar","guardar registo","gravar registo"].includes(n)) {
   await saveCurrent();
   voiceMode = null;
-  if (recognition) recognition.abort();
+if (recognition) recognition.abort();
+}
   voiceBtn.classList.remove("listening");
   voiceStatus.textContent = "Pronto";
   voiceHelp.textContent = "Registo guardado. Microfone desativado.";
@@ -338,11 +350,16 @@ voiceBtn.addEventListener("click", () => {
 });
 
 $("saveBtn").addEventListener("click", async () => {
-  await saveCurrent();
   voiceMode = null;
-  if (recognition) recognition.stop();
-  voiceBtn.classList.remove("listening");
-  voiceStatus.textContent = "Pronto";
+
+  if (recognitionActive) {
+    saveWhenRecognitionEnds = true;
+    voiceHelp.textContent = "A terminar o microfone e a guardar…";
+    recognition.stop();
+    return;
+  }
+
+  await saveCurrent();
   voiceHelp.textContent = "Registo guardado. Microfone desativado.";
 });
 $("clearBtn").addEventListener("click", clearForm);
