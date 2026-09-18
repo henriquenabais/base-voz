@@ -279,7 +279,7 @@ async function handleVoice(text) {
 if (["guardar","gravar","guardar registo","gravar registo"].includes(n)) {
   await saveCurrent();
   voiceMode = null;
-  if (recognition) recognition.stop();
+  if (recognition) recognition.abort();
   voiceBtn.classList.remove("listening");
   voiceStatus.textContent = "Pronto";
   voiceHelp.textContent = "Registo guardado. Microfone desativado.";
