@@ -92,3 +92,11 @@ button.secondary { background: #eef2ff; }
   .container { padding-left: 10px; padding-right: 10px; }
   .card { padding: 15px; }
 }
+.month-separator {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-top: 22px;
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid currentColor;
+}
