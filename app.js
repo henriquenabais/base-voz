@@ -42,7 +42,13 @@ function addRecord(record) {
     request.onerror = () => reject(request.error);
   });
 }
-
+function clearRecords() {
+  return new Promise((resolve, reject) => {
+    const request = tx("readwrite").clear();
+    request.onsuccess = () => resolve();
+    request.onerror = () => reject(request.error);
+  });
+}
 function putRecord(record) {
   return new Promise((resolve, reject) => {
     const request = tx("readwrite").put(record);
@@ -362,7 +368,8 @@ $("importFile").addEventListener("change", async e => {
     const text = await file.text();
     const payload = JSON.parse(text);
     if (!payload || !Array.isArray(payload.records)) throw new Error("Formato inválido");
-    if (!confirm(`Restaurar ${payload.records.length} registo(s)? Os dados atuais não serão apagados; os registos do backup serão adicionados.`)) return;
+   if (!confirm(`Restaurar ${payload.records.length} registo(s)? Os dados atuais serão substituídos pelos dados deste backup.`)) return;
+await clearRecords();
     let count = 0;
     for (const r of payload.records) {
       await addRecord({
@@ -373,7 +380,7 @@ $("importFile").addEventListener("change", async e => {
       });
       count++;
     }
-    backupStatus.textContent = `Restauro concluído: ${count} registo(s) adicionados.`;
+    backupStatus.textContent = `Restauro concluído: ${count} registo(s) restaurados.`;
     await renderRecords();
   } catch (err) {
     backupStatus.textContent = "Não foi possível restaurar o backup. Verifique o ficheiro.";
