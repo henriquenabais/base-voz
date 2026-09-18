@@ -161,8 +161,29 @@ all.sort((a, b) => dateValue(a) - dateValue(b));
     recordsEl.innerHTML = `<div class="empty">${all.length ? "Nenhum registo corresponde à pesquisa." : "Ainda não existem registos."}</div>`;
     return;
   }
+  const monthNames = [
+    "Janeiro", "Fevereiro", "Março", "Abril",
+    "Maio", "Junho", "Julho", "Agosto",
+    "Setembro", "Outubro", "Novembro", "Dezembro"
+  ];
 
+  let lastMonthYear = "";
   for (const r of filtered) {
+        const dateMatch = String(r.data || "").match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+
+    if (dateMatch) {
+      const month = Number(dateMatch[2]);
+      const year = dateMatch[3];
+      const monthYear = `${month}-${year}`;
+
+      if (monthYear !== lastMonthYear) {
+        const separator = document.createElement("div");
+        separator.className = "month-separator";
+        separator.textContent = `${monthNames[month - 1]} de ${year}`;
+        recordsEl.appendChild(separator);
+        lastMonthYear = monthYear;
+      }
+    }
     const el = document.createElement("article");
     el.className = "record";
     el.innerHTML = `
